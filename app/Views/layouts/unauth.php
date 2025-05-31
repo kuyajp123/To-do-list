@@ -5,12 +5,7 @@
     <meta charset="UTF-8">
     <title><?= esc($title ?? 'To-do list') ?></title>
     <?= view('components/bootstrap/bootstrapLink') ?>
-    <style>
-        body {
-            height: 100vh;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('global.css') ?>">
 </head>
 
 <body>

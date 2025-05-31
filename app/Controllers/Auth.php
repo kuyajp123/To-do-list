@@ -9,6 +9,11 @@ class Auth extends BaseController
 
     // View Routes
 
+    public function register()
+    {
+        return view('auth/register', ['title' => 'Register']);
+    }
+
     public function login()
     {
         return view('auth/login', ['title' => 'Login']);
@@ -19,10 +24,12 @@ class Auth extends BaseController
         return view('/user/dashboard');
     }
 
-    public function register()
+    public function tasks()
     {
-        return view('auth/register', ['title' => 'Register']);
+        return view('/pages/tasks');
     }
+
+
 
 
     // Handles Auth processes

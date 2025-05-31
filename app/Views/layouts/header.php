@@ -1,6 +1,6 @@
 <?php $session = session(); ?>
-<header>
-        <nav class="navbar bg-body-tertiary px-3 d-flex justify-content-between">
+<header style="background-color: #F8F8FF;">
+        <nav style="background-color: #F8F8FF;" class="navbar bg-body-tertiary px-3 d-flex justify-content-between">
                 <div class="container">
                         <a class="navbar-brand" href="#">
                                 <img src="/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
@@ -9,7 +9,7 @@
                 <?php if ($session->get('isLoggedIn')):
                 ?>
                         <button class="btn rounded-circle">
-                                <i class="bi bi-bell"></i>
+                                <i class="bi bi-bell-fill"></i>
                         </button>
                         <div class="btn-group dropstart">
                                 <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,10 +30,22 @@
                                                         Account
                                                         <i class="bi bi-chevron-right"></i>
                                                 </a></li>
-                                        <li><a class="dropdown-item container" href="<?= site_url('/dashboard') ?>" class="text-decoration-none text-dark px-5">
-                                                        Dashboard
-                                                        <i class="bi bi-chevron-right"></i>
-                                                </a></li>
+
+                                        <?php
+                                        $uri = service('uri');
+                                        $segment = $uri->getSegment(1);
+                                        if ($segment === 'dashboard' || $segment === 'tasks' || $segment === 'notes' || $segment === 'schedules'):
+                                        ?>
+                                                <li><a class="dropdown-item container" href="<?= site_url('/') ?>">
+                                                                Home
+                                                                <i class="bi bi-chevron-right"></i>
+                                                        </a></li>
+                                        <?php else: ?>
+                                                <li><a class="dropdown-item container" href="<?= site_url('/dashboard') ?>" class="text-decoration-none text-dark px-5">
+                                                                Dashboard
+                                                                <i class="bi bi-chevron-right"></i>
+                                                        </a></li>
+                                        <?php endif; ?>
                                         <li><a class="dropdown-item container" href="#">
                                                         Settings
                                                         <i class="bi bi-chevron-right"></i>

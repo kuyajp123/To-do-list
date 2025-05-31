@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../assets/font/poppins/Poppins-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../../assets/font/poppins/Poppins-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../../assets/font/poppins/Poppins-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../../assets/font/poppins/Poppins-Bold.ttf') format('truetype');
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F8F8FF;
+    height: 100vh;
+    width: 100%;
+}
+
+
+.modal .modal-dialog {
+    transform: scale(0.8);
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    opacity: 0;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+    opacity: 1;
+}

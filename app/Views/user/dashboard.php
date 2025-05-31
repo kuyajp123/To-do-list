@@ -24,7 +24,6 @@
         justify-content: space-between;
         gap: 20%;
         flex-direction: row;
-        border: 1px solid violet;
         padding: 20px;
     }
 
