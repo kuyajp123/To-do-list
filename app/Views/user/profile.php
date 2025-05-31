@@ -1,24 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+<?= $this->extend('layouts/unauth') ?>
+<?= $this->section('content') ?>
+<style>
+    .layout {
+        display: grid;
+        grid-template-rows: 70px 1fr;
+        height: 100vh;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello <?= esc(session()->get('username')) ?>!</title>
-    <?= view('components/bootstrap/bootstrapLink') ?>
-</head>
+    .body {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+    }
 
-<body>
-    <?= view('layouts/header') ?>
-    <div class="container mt-5">
-        <h1 class="text-center">User Profile</h1>
-        <div class="card">
-            <div class="card-body">
-                <p class="card-text">Username: <?= esc(session()->get('username')) ?> </p>
+    .main-content {
+        display: grid;
+        grid-template-rows: 20% 1fr;
+        height: 100%;
+    }
+
+    .search-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20%;
+        flex-direction: row;
+        border: 1px solid violet;
+        padding: 20px;
+    }
+
+    .content {
+        border: 1px solid violet;
+        padding: 20px;
+    }
+</style>
+<div class="layout">
+    <div class="header">
+        <?= view('layouts/header') ?>
+    </div>
+
+    <div class="body">
+        <div class="sidebar">
+            <?= view('layouts/sideBar') ?>
+        </div>
+        <div class="main-content">
+            <div class="search-header">
+                <?= view('layouts/main-content/search') ?>
             </div>
+            <div class="content"></div>
         </div>
     </div>
-    <?= view('layouts/footer') ?>
-</body>
+</div>
 
-</html>
+<?= $this->endSection() ?>

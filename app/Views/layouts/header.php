@@ -1,14 +1,51 @@
 <?php $session = session(); ?>
-<header class="container-fluid d-flex justify-content-end align-items-center p-3">
-        <?php if ($session->get('isLoggedIn')): ?>
-                <span class="me-3">Hello, <?= esc($session->get('username')) ?></span>
-                <a href="<?= site_url('/profile') ?>" class="text-decoration-none text-dark">Profile</a>
-                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                <a href="<?= site_url('/logout') ?>" class="text-decoration-none text-dark">Logout</a>
-
-        <?php else: ?>
-                <a href="<?= site_url('/login') ?>" class="text-decoration-none text-dark">Login</a>
-                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                <a href="<?= site_url('/register') ?>" class="text-decoration-none text-dark">Register</a>
-        <?php endif; ?>
+<header>
+        <nav class="navbar bg-body-tertiary px-3 d-flex justify-content-between">
+                <div class="container">
+                        <a class="navbar-brand" href="#">
+                                <img src="/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+                        </a>
+                </div>
+                <?php if ($session->get('isLoggedIn')):
+                ?>
+                        <button class="btn rounded-circle">
+                                <i class="bi bi-bell"></i>
+                        </button>
+                        <div class="btn-group dropstart">
+                                <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <?php $sql = "SELECT image FROM users WHERE id = ?";
+                                        $db = \Config\Database::connect();
+                                        $query = $db->query($sql, [$session->get('user_id')]);
+                                        $user = $query->getRow();
+                                        if ($user && $user->image): ?>
+                                                <img src="<?= base_url('uploads/profile_images/' . esc($user->image)) ?>" class="img-thumbnail rounded-circle" alt="Test Image" style="width: 45px; height: 45px; object-fit: cover;">
+                                        <?php else: ?>
+                                                <i class="bi bi-person-circle fs-3"></i>
+                                        <?php endif; ?>
+                                        &nbsp;&nbsp;
+                                        <?= esc($session->get('username')) ?>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-light">
+                                        <li><a class="dropdown-item container" href="<?= site_url('profile') ?>">
+                                                        Account
+                                                        <i class="bi bi-chevron-right"></i>
+                                                </a></li>
+                                        <li><a class="dropdown-item container" href="#">
+                                                        Settings
+                                                        <i class="bi bi-chevron-right"></i>
+                                                </a></li>
+                                        <li><a class="dropdown-item container" href="<?= site_url('/logout') ?>">
+                                                        Logout
+                                                        <i class="bi bi-chevron-right"></i>
+                                                </a></li>
+                                </ul>
+                        </div>
+                <?php else:
+                ?>
+                        <a href="<?= site_url('/login') ?>" class="text-decoration-none text-dark">Login</a>
+                        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                        <a href="<?= site_url('/register') ?>" class="text-decoration-none text-dark">Register</a>
+                <?php endif;
+                ?>
+        </nav>
 </header>

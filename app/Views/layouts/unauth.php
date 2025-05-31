@@ -1,13 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title><?= esc($title ?? 'To-Do App') ?></title>
-    <link rel="stylesheet" href="<?= base_url('assets/bootstrap-5.3.6-dist/css/bootstrap.min.css') ?>">
-    <script src="<?= base_url('assets/bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') ?>"></script>
+    <title><?= esc($title ?? 'To-do list') ?></title>
+    <?= view('components/bootstrap/bootstrapLink') ?>
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div class="container mt-5">
-        <a href="<?= site_url('/') ?>" class="text-decoration-none text-dark">Home</a>
-        <?= $this->renderSection('content') ?>
-    </div>
+    <?= $this->renderSection('content') ?>
+
+</body>
+
+</html>
