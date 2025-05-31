@@ -14,19 +14,15 @@ class Auth extends BaseController
         return view('auth/login', ['title' => 'Login']);
     }
 
-    public function profile()
+    public function dashboard()
     {
-        return view('/user/profile');
+        return view('/user/dashboard');
     }
 
     public function register()
     {
         return view('auth/register', ['title' => 'Register']);
     }
-
-
-
-
 
 
     // Handles Auth processes
@@ -57,7 +53,7 @@ class Auth extends BaseController
             'username'   => $user['username'],
         ]);
 
-        return redirect()->to('profile');
+        return redirect()->to('dashboard');
     }
 
     public function saveRegister()
@@ -68,7 +64,9 @@ class Auth extends BaseController
             'name'     => 'required',
             'username' => 'required|is_unique[users.username]',
             'password' => 'required|min_length[6]',
-            'image'   => 'permit_empty|is_image[image]|max_size[image,2048]',
+            'email'    => 'required|valid_email|is_unique[users.email]',
+            'image'    => 'permit_empty|is_image[image]|max_size[image,2048]',
+            'confirm_password' => 'matches[password]'
         ];
 
         if (!$validation->setRules($rules)->run($this->request->getPost())) {
@@ -77,19 +75,20 @@ class Auth extends BaseController
 
         $userModel = new UserModel();
         $image = $this->request->getFile('profile_image');
+        $newName = null;
 
-        if ($image->isValid() && !$image->hasMoved()) {
-            $newName = $image->getRandomName(); // or use user id, etc.
+        if ($image && $image->isValid() && !$image->hasMoved()) {
+            $newName = $image->getRandomName();
             $image->move('uploads/profile_images', $newName);
-
-            // Save filename to database
-            $userModel->insert([
-                'name'     => $this->request->getPost('name'),
-                'username' => $this->request->getPost('username'),
-                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                'image'   => $newName,
-            ]);
         }
+
+        $userModel->insert([
+            'name'     => $this->request->getPost('name'),
+            'username' => $this->request->getPost('username'),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'email'    => $this->request->getPost('email'),
+            'image'    => $newName, // this can be null if no image uploaded
+        ]);
 
         $user = $userModel->where('username', $this->request->getPost('username'))->first();
         $session = session();
@@ -99,7 +98,7 @@ class Auth extends BaseController
             'username'   => $user['username'],
         ]);
 
-        return redirect()->to('/profile');
+        return redirect()->to('/dashboard');
     }
 
     public function logout()

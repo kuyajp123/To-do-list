@@ -30,6 +30,10 @@
                                                         Account
                                                         <i class="bi bi-chevron-right"></i>
                                                 </a></li>
+                                        <li><a class="dropdown-item container" href="<?= site_url('/dashboard') ?>" class="text-decoration-none text-dark px-5">
+                                                        Dashboard
+                                                        <i class="bi bi-chevron-right"></i>
+                                                </a></li>
                                         <li><a class="dropdown-item container" href="#">
                                                         Settings
                                                         <i class="bi bi-chevron-right"></i>

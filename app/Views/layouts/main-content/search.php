@@ -1,16 +1,14 @@
 <div class="border">
     <span class="fs-3">
         <?php
-        $currentRoute = service('router')->controllerName();
-        if (strpos(strtolower($currentRoute), 'dashboard') !== false) {
+        $currentRoute = strtolower(service('router')->controllerName());
+        if (strpos($currentRoute, 'dashboard') !== false) {
             echo 'Dashboard';
-        } elseif (strpos(strtolower($currentRoute), 'task') !== false) {
+        } elseif (strpos($currentRoute, 'task') !== false) {
             echo 'Task';
-        } elseif (strpos(strtolower($currentRoute), 'task') !== false) {
-            echo 'Task';
-        } elseif (strpos(strtolower($currentRoute), 'note') !== false) {
+        } elseif (strpos($currentRoute, 'note') !== false) {
             echo 'Note';
-        } elseif (strpos(strtolower($currentRoute), 'schedule') !== false) {
+        } elseif (strpos($currentRoute, 'schedule') !== false) {
             echo 'Schedule';
         } else {
             echo 'Home';

@@ -12,7 +12,7 @@ class RedirectIfAuthenticated implements FilterInterface
     {
         // If user is already logged in
         if (session()->get('isLoggedIn')) {
-            return redirect()->to('/profile');
+            return redirect()->to('/dashboard');
         }
     }
 

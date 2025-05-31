@@ -17,4 +17,4 @@ $routes->group('', ['filter' => 'guest'], function ($routes) {
 $routes->post('register/save', 'Auth::saveRegister');
 $routes->post('loginUser', 'Auth::loginUser');
 $routes->get('logout', 'Auth::logout');
-$routes->get('profile', 'Auth::profile', ['filter' => 'auth']);
+$routes->get('dashboard', 'Auth::dashboard', ['filter' => 'auth']);

@@ -26,6 +26,14 @@
             <?php endif; ?>
           </div>
 
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" name="email" class="form-control" value="<?= old('email') ?>" required>
+            <?php if (session('errors.email')): ?>
+              <small class="text-danger"><?= esc(session('errors.email')) ?></small>
+            <?php endif; ?>
+          </div>
+
           <div class="mb-3 d-flex flex-row">
             <div>
               <label for="profile_image" class="form-label">Profile Image</label>
@@ -44,6 +52,14 @@
             <input type="password" name="password" class="form-control" required>
             <?php if (session('errors.password')): ?>
               <small class="text-danger"><?= esc(session('errors.password')) ?></small>
+            <?php endif; ?>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Confirm password</label>
+            <input type="password" name="confirm_password" class="form-control" required>
+            <?php if (session('errors.confirm_password')): ?>
+              <small class="text-danger"><?= esc(session('errors.confirm_password')) ?></small>
             <?php endif; ?>
           </div>
 

@@ -33,6 +33,7 @@
         padding: 20px;
     }
 </style>
+
 <div class="layout">
     <div class="header">
         <?= view('layouts/header') ?>
@@ -46,7 +47,9 @@
             <div class="search-header">
                 <?= view('layouts/main-content/search') ?>
             </div>
-            <div class="content"></div>
+            <div class="content">
+
+            </div>
         </div>
     </div>
 </div>
