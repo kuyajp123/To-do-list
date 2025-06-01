@@ -19,16 +19,6 @@ class Auth extends BaseController
         return view('auth/login', ['title' => 'Login']);
     }
 
-    public function dashboard()
-    {
-        return view('/user/dashboard');
-    }
-
-    public function tasks()
-    {
-        return view('/pages/tasks');
-    }
-
 
 
 
@@ -94,7 +84,7 @@ class Auth extends BaseController
             'username' => $this->request->getPost('username'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'email'    => $this->request->getPost('email'),
-            'image'    => $newName, // this can be null if no image uploaded
+            'image'    => $newName,
         ]);
 
         $user = $userModel->where('username', $this->request->getPost('username'))->first();
