@@ -72,4 +72,22 @@ class Home extends BaseController
             return $this->response->setJSON(['error' => 'Task not found'], 404);
         }
     }
+
+    public function updateTodoTask()
+    {
+        $taskId = $this->request->getPost('task_id');
+        $checkedTasks = $this->request->getPost('tasks') ?? [];
+
+        $model = new TodoTaskModel();
+
+        // Set all to unchecked first
+        $model->where('tasks_id', $taskId)->set(['is_done' => 0])->update();
+
+        // Set checked ones
+        if (!empty($checkedTasks)) {
+            $model->whereIn('id', $checkedTasks)->set(['is_done' => 1])->update();
+        }
+
+        return $this->response->setJSON(['success' => true]);
+    }
 }

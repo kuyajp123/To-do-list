@@ -23,3 +23,4 @@ $routes->get('logout', 'Auth::logout');
 $routes->post('tasks/save', 'Home::saveTask', ['filter' => 'auth']);
 $routes->get('tasks', 'Home::getAllTasks', ['filter' => 'auth']);
 $routes->get('get-todo-task/(:num)', 'Home::getTodoTask/$1', ['filter' => 'auth']);
+$routes->post('update-todo-task', 'Home::updateTodoTask');

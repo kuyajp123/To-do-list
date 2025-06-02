@@ -133,7 +133,8 @@
                                     </div>
                                 </div>
 
-                                <div class="card-body modal-body-data"
+                                <div
+                                    class="card-body modal-body-data"
                                     data-task-id="<?= esc($task['id']) ?>"
                                     style="cursor: pointer;"
                                     onclick="openModal(event, '#todo-<?= esc($task['id']) ?>')"
@@ -150,18 +151,25 @@
                                 <div class="modal-dialog modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Task No. <?= $taskNo ?></h1>
                                         </div>
-                                        <div
-                                            class=""
-                                            id="modal-body-<?= esc($task['id']) ?>">
-                                            Loading...
+                                        <div class="modal-body">
+                                            <h5 class="card-title"><b><?= esc($task['title']) ?></b></h5> <br>
+                                            <?php
+                                            if ($task['description']) {
+                                                echo "<p class='card-text'>" . esc($task['description']) . "</p> <br>";
+                                            }
+                                            ?>
+                                            <form id="update-task-form-<?= esc($task['id']) ?>" method="post" action="<?= base_url('update-todo-task') ?>">
+                                                <input type="hidden" name="task_id" value="<?= esc($task['id']) ?>">
+                                                <div class="container-fluid" id="modal-body-<?= esc($task['id']) ?>">
+
+                                                </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="button" class="btn btn-primary" onclick="submitUpdatedTask(<?= esc($task['id']) ?>)">Save changes</button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

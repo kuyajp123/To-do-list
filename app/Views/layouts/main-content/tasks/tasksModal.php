@@ -87,27 +87,72 @@
     }
 
     // view to-do task data
-    $('.modal-body-data').on('click', function() {
+    $('.modal-body-data').on('click', async function() {
         const taskId = $(this).data('task-id');
         const modalBodyId = `#modal-body-${taskId}`;
 
-        $.ajax({
-            url: `/get-todo-task/${taskId}`, // Adjust this if your route is different
-            type: 'GET',
-            success: function(res) {
-                if (res.task) {
-                    let html = '';
-                    res.task.forEach(todo => {
-                        html += `<p>${todo.task_name} - ${todo.is_done == 1 ? 'Done' : 'Pending'}</p>`;
-                    });
-                    $(modalBodyId).html(html);
-                } else {
-                    $(modalBodyId).html('<p class="text-danger">No todo tasks found.</p>');
-                }
-            },
-            error: function() {
-                $(modalBodyId).html('<p class="text-danger">Failed to fetch data.</p>');
+        $(modalBodyId).html(`
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    `);
+
+        try {
+            const response = await fetch(`/get-todo-task/${taskId}`);
+            const res = await response.json();
+
+            if (res.task && res.task.length > 0) {
+                let html = ``;
+
+                res.task.forEach((todo, index) => {
+                    const isChecked = todo.is_done == 1 ? 'checked' : '';
+                    const isStriked = todo.is_done == 1 ? 'text-decoration-line-through' : '';
+                    html += `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                            id="task-${taskId}-${index}"
+                            name="tasks[]"
+                            value="${todo.id}" ${isChecked}>
+                        <label class="form-check-label ${isStriked}" for="task-${taskId}-${index}">
+                            ${todo.task_name}
+                        </label>
+                    </div>
+                `;
+                });
+
+                $(modalBodyId).html(html);
+            } else {
+                $(modalBodyId).html('<p class="text-danger">No todo tasks found.</p>');
             }
-        });
+
+        } catch (error) {
+            $(modalBodyId).html('<p class="text-danger">Failed to fetch data.</p>');
+        }
     });
+
+    // submit updated to-do task
+    function submitUpdatedTask(taskId) {
+        const form = document.getElementById(`update-task-form-${taskId}`);
+        const formData = new FormData(form);
+
+        fetch('/update-todo-task', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // alert('Task updated successfully!');
+                    location.reload(); // optional: refresh to show changes
+                } else {
+                    alert('Update failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating task:', error);
+                alert('Something went wrong.');
+            });
+    }
 </script>
