@@ -1,3 +1,4 @@
+<!-- add task modal -->
 <div class="modal" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
@@ -40,7 +41,7 @@
 </div>
 
 <script>
-    // taskHandler.js
+    // add task modal js
     document.addEventListener("DOMContentLoaded", () => {
         const taskContainer = document.querySelector("#taskInputs");
         const addBtn = document.querySelector("#addTaskBtn");
@@ -71,6 +72,41 @@
 
             if (taskCount === 1) {
                 removeBtn.classList.add("d-none");
+            }
+        });
+    });
+
+    // view to-do task modal js
+    function openModal(event, modalId) {
+        const dropdown = event.target.closest('#more');
+        if (dropdown) return; // If click is inside dropdown, cancel modal open
+
+        const modal = document.querySelector(modalId);
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+    }
+
+    // view to-do task data
+    $('.modal-body-data').on('click', function() {
+        const taskId = $(this).data('task-id');
+        const modalBodyId = `#modal-body-${taskId}`;
+
+        $.ajax({
+            url: `/get-todo-task/${taskId}`, // Adjust this if your route is different
+            type: 'GET',
+            success: function(res) {
+                if (res.task) {
+                    let html = '';
+                    res.task.forEach(todo => {
+                        html += `<p>${todo.task_name} - ${todo.is_done == 1 ? 'Done' : 'Pending'}</p>`;
+                    });
+                    $(modalBodyId).html(html);
+                } else {
+                    $(modalBodyId).html('<p class="text-danger">No todo tasks found.</p>');
+                }
+            },
+            error: function() {
+                $(modalBodyId).html('<p class="text-danger">Failed to fetch data.</p>');
             }
         });
     });

@@ -12,12 +12,7 @@ class GetTodoTaskModel extends Model
 
     public function getUserTodoTasks($taskId)
     {
-        return $this->db->table('todo_tasks')
-            ->select('todo_tasks.id, todo_tasks.tasks_id, todo_tasks.task_name, todo_tasks.is_done')
-            ->join('tasks', 'tasks.id = todo_tasks.tasks_id')
-            ->where('tasks.user_id', session()->get('user_id'))
-            ->where('todo_tasks.tasks_id', $taskId)
-            ->get()
-            ->getResult();
+        return $this->where('tasks_id', $taskId)
+            ->findAll();
     }
 }
