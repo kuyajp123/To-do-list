@@ -11,10 +11,15 @@
         <form action="<?= site_url('loginUser') ?>" method="post">
           <?= csrf_field() ?>
 
-          <label for="">Username</label>
-          <div class="form-floating mb-3">
-            <input type="text" name="username" id="floatingUsername" class="form-control" placeholder="Username" required>
-            <label for="floatingUsername" class="form-label">@</label>
+          <div class="mb-3">
+            <label for="">Username</label>
+            <div class="form-floating mb-3">
+              <input type="text" name="username" id="floatingUsername" class="form-control" placeholder="Username" value="<?= old('username') ?>" required>
+              <label for="floatingUsername" class="form-label">@</label>
+            </div>
+            <?php if (session('errors.username')): ?>
+              <small class="text-danger"><?= esc(session('errors.username')) ?></small>
+            <?php endif; ?>
           </div>
 
           <label for="">Password</label>
@@ -23,24 +28,24 @@
             <label for="floatingPassword" class="form-label">Password</label>
           </div>
 
+          <?php if (session()->has('errors')) : ?>
+            <div>
+              <ul class="mb-0">
+                <?php foreach (session('errors') as $error) : ?>
+                  <li class="text-danger d-flex justify-content-center mb-3"><?= esc($error) ?></li>
+                <?php endforeach ?>
+              </ul>
+            </div>
+          <?php endif; ?>
+
+          <?php if (session()->has('error')) : ?>
+            <div class="text-danger d-flex justify-content-center mb-3">
+              <?= esc(session('error')) ?>
+            </div>
+          <?php endif; ?>
+
           <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
-
-        <?php if (session()->has('errors')) : ?>
-          <div>
-            <ul class="mb-0">
-              <?php foreach (session('errors') as $error) : ?>
-                <li class="text-danger d-flex justify-content-center mb-3"><?= esc($error) ?></li>
-              <?php endforeach ?>
-            </ul>
-          </div>
-        <?php endif; ?>
-
-        <?php if (session()->has('error')) : ?>
-          <div class="text-danger d-flex justify-content-center mb-3">
-            <?= esc(session('error')) ?>
-          </div>
-        <?php endif; ?>
 
         <p class="mt-3 text-center">
           Don't have an account? <a href="<?= site_url('register') ?>">Register</a>

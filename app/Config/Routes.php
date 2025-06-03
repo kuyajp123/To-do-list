@@ -24,3 +24,5 @@ $routes->post('tasks/save', 'Home::saveTask', ['filter' => 'auth']);
 $routes->get('tasks', 'Home::getAllTasks', ['filter' => 'auth']);
 $routes->get('get-todo-task/(:num)', 'Home::getTodoTask/$1', ['filter' => 'auth']);
 $routes->post('update-todo-task', 'Home::updateTodoTask');
+$routes->post('tasks/edit', 'Home::edit');
+$routes->post('tasks/delete/(:num)', 'Home::deleteTask/$1');

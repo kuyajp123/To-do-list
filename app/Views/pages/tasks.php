@@ -117,14 +117,22 @@
                                             aria-expanded="false">
                                         </i>
                                         <ul class="dropdown-menu">
-                                            <li>
+                                            <li class="edit-task-modal"
+                                                data-task-id="<?= esc($task['id']) ?>"
+                                                data-task-title="<?= esc($task['title']) ?>"
+                                                data-task-desc="<?= esc($task['description']) ?>"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#edit-task-modal">
                                                 <a
                                                     class="dropdown-item edit-task-btn"
                                                     role="button">
                                                     <i class="bi bi-pencil-square"></i>&nbsp; Edit
                                                 </a>
                                             </li>
-                                            <li>
+                                            <li data-task-id="<?= esc($task['id']) ?>"
+                                                data-task-title="<?= esc($task['title']) ?>"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal">
                                                 <a class="dropdown-item" href="#">
                                                     <i class="bi bi-trash3-fill text-danger"></i>&nbsp; Delete
                                                 </a>
@@ -137,7 +145,6 @@
                                     class="card-body modal-body-data"
                                     data-task-id="<?= esc($task['id']) ?>"
                                     style="cursor: pointer;"
-                                    onclick="openModal(event, '#todo-<?= esc($task['id']) ?>')"
                                     data-bs-toggle="modal"
                                     data-bs-target="#todo-<?= esc($task['id']) ?>">
                                     <h5 class="ellipsis card-title"><b><?= esc($task['title']) ?></b></h5>
@@ -152,6 +159,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Task No. <?= $taskNo ?></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <h5 class="card-title"><b><?= esc($task['title']) ?></b></h5> <br>
@@ -167,6 +175,7 @@
                                                 </div>
                                         </div>
                                         <div class="modal-footer">
+                                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary" onclick="submitUpdatedTask(<?= esc($task['id']) ?>)">Save changes</button>
                                         </div>
                                         </form>
@@ -208,6 +217,7 @@
 </div>
 </div>
 </div>
+
 
 <?= view('layouts/main-content/tasks/tasksModal') ?>
 <?= $this->endSection() ?>

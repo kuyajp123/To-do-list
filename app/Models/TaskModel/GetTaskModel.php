@@ -8,8 +8,8 @@ class GetTaskModel extends Model
 {
     protected $table = 'tasks';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'title', 'description', 'created_at', 'deleted_at'];
-    protected $useSoftDeletes = true;
+    protected $allowedFields = ['user_id', 'title', 'description', 'created_at'];
+    protected $useSoftDeletes = false;
     protected $useTimestamps = false;
 
     public function getAllTask()
