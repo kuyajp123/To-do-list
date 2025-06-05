@@ -193,22 +193,35 @@
                             </div>
                         </button>
                     </div>
+                    
                 <?php else: ?>
+                    <?php if (!empty($search)): ?>
 
-                    <!-- if theres no task content -->
-                    <div class="container-fluid h-100 w-100 p-0 d-flex flex-column justify-content-center align-items-center gap-3">
-                        <div class="d-flex flex-column justify-content-center align-items-center text-center gap-3">
-                            <img src="<?= base_url('assets/empty-state/no_task.svg') ?>" alt="My Icon" width="150">
-                            <div class="d-flex flex-column justify-content-center align-items-center text-center text-muted">
-                                <span><b>No Task Yet</b></span>
-                                <span>it seems there are no task added yet</span>
+                        <!-- if theres no result found in search -->
+                        <div class="container-fluid h-100 w-100 p-0 d-flex flex-column justify-content-center align-items-center gap-3">
+                            <div class="d-flex flex-column justify-content-center align-items-center text-center gap-3">
+                                <div class="text-center">
+                                    No results found for "<strong><?= esc($search) ?></strong>".
+                                </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                            <i class="bi bi-plus-lg"></i>
-                            Add Task
-                        </button>
-                    </div>
+
+                    <?php else: ?>
+                        <!-- if theres no task content -->
+                        <div class="container-fluid h-100 w-100 p-0 d-flex flex-column justify-content-center align-items-center gap-3">
+                            <div class="d-flex flex-column justify-content-center align-items-center text-center gap-3">
+                                <img src="<?= base_url('assets/empty-state/no_task.svg') ?>" alt="My Icon" width="150">
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center text-muted">
+                                    <span><b>No Task Yet</b></span>
+                                    <span>it seems there are no task added yet</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                                <i class="bi bi-plus-lg"></i>
+                                Add Task
+                            </button>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
 
             </div>

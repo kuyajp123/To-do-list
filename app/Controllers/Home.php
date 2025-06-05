@@ -6,6 +6,7 @@ use App\Models\TaskModel\TasksModel;
 use App\Models\TaskModel\TodoTaskModel;
 use App\Models\TaskModel\GetTaskModel;
 use App\Models\TaskModel\GetTodoTaskModel;
+use App\Models\TaskModel\SearchTaskModel;
 
 class Home extends BaseController
 {
@@ -55,10 +56,25 @@ class Home extends BaseController
 
     public function getAllTasks()
     {
-        $getTaskModel = new GetTaskModel();
-        $tasks = $getTaskModel->getAllTask();
+        $search = $this->request->getGet('query');
+        $taskModel = new GetTaskModel();
+        $searchModel = new SearchTaskModel();
 
-        return view('pages/tasks', ['tasks' => $tasks]);
+        if ($search) {
+            $tasks = $searchModel->searchTasks($search);
+        } else {
+            $tasks = $taskModel->getAllTask();
+        }
+
+        return view('pages/tasks', [
+            'tasks' => $tasks,
+            'search' => $search
+        ]);
+
+        // $getTaskModel = new GetTaskModel();
+        // $tasks = $getTaskModel->getAllTask();
+
+        // return view('pages/tasks', ['tasks' => $tasks]);
     }
 
     public function getTodoTask($taskId)
