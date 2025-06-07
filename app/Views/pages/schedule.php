@@ -56,7 +56,16 @@
                             headerToolbar: {
                                 left: 'prev,next today',
                                 center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                                right: 'dayGridMonth,timeGridWeek,timeGridDay,yearView'
+                            },
+                            views: {
+                                yearView: {
+                                    type: 'dayGrid',
+                                    duration: {
+                                        years: 1
+                                    },
+                                    buttonText: 'Year'
+                                }
                             },
                             initialDate: '<?= date('Y-m-d') ?>',
                             navLinks: true,
@@ -72,7 +81,6 @@
                                         allDay: arg.allDay
                                     };
 
-                                    // Save to database
                                     fetch('<?= base_url('calendar/save-event') ?>', {
                                             method: 'POST',
                                             headers: {
@@ -83,7 +91,7 @@
                                         .then(res => res.json())
                                         .then(data => {
                                             if (data.status === 'success') {
-                                                eventData.id = data.id; // Assign the returned ID
+                                                eventData.id = data.id;
                                                 calendar.addEvent(eventData);
                                             } else {
                                                 alert('Failed to save event.');
@@ -128,7 +136,7 @@
                                 id: event.id,
                                 start: event.startStr,
                                 end: event.endStr,
-                                allDay: event.allDay // <-- add this line
+                                allDay: event.allDay
                             };
 
                             fetch('<?= base_url('calendar/update-event') ?>', {
