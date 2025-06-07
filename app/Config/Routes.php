@@ -12,6 +12,7 @@ $routes->group('', ['filter' => 'guest'], function ($routes) {
 });
 $routes->get('/', 'Home::index');
 $routes->get('dashboard', 'Home::dashboard', ['filter' => 'auth']);
+$routes->get('schedule', 'Home::schedule', ['filter' => 'auth']);
 
 
 // Auth Routes
@@ -19,10 +20,14 @@ $routes->post('register/save', 'Auth::saveRegister');
 $routes->post('loginUser', 'Auth::loginUser');
 $routes->get('logout', 'Auth::logout');
 
-// API Routes
+
+// Task Routes
 $routes->post('tasks/save', 'Home::saveTask', ['filter' => 'auth']);
 $routes->get('tasks', 'Home::getAllTasks', ['filter' => 'auth']);
 $routes->get('get-todo-task/(:num)', 'Home::getTodoTask/$1', ['filter' => 'auth']);
 $routes->post('update-todo-task', 'Home::updateTodoTask');
 $routes->post('tasks/edit', 'Home::edit');
 $routes->post('tasks/delete/(:num)', 'Home::deleteTask/$1');
+
+// Calendar Routes
+$routes->post('calendar/save-event', 'CalendarController::saveEvent');

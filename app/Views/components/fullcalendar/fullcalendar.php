@@ -1,0 +1,1 @@
+<script src="<?= base_url('assets/fullcalendar/dist/index.global.min.js') ?>"></script>

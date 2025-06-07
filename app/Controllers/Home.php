@@ -21,6 +21,11 @@ class Home extends BaseController
         return view('/user/dashboard');
     }
 
+    public function schedule()
+    {
+        return view('/pages/schedule');
+    }
+
 
     // API Routes
     public function saveTask()

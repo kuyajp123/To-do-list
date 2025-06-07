@@ -50,7 +50,7 @@
                     <i class="bi bi-file-earmark-text-fill text-secondary"></i>Notes</button>
             </li>
         </a>
-        <a href="#" class="sidebar-link">
+        <a href="<?= base_url('schedule') ?>" class="sidebar-link">
             <li class="list-group-item border-0">
                 <button class="btn w-100 text-dark d-flex gap-3 align-items-start fw-bold"> <i class="bi bi-calendar-check-fill text-secondary"></i>Schedules</button>
             </li>
