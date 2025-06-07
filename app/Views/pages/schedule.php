@@ -28,7 +28,6 @@
     }
 
     .content {
-        border: 1px solid violet;
         padding: 20px;
     }
 </style>
@@ -84,24 +83,72 @@
                                         .then(res => res.json())
                                         .then(data => {
                                             if (data.status === 'success') {
-                                                calendar.addEvent(eventData); // Render on calendar
+                                                eventData.id = data.id; // Assign the returned ID
+                                                calendar.addEvent(eventData);
                                             } else {
                                                 alert('Failed to save event.');
                                             }
                                         });
+
                                 }
 
                                 calendar.unselect();
                             },
                             eventClick: function(arg) {
                                 if (confirm('Are you sure you want to delete this event?')) {
-                                    arg.event.remove()
+                                    const eventId = arg.event.id;
+
+                                    fetch(`<?= base_url('calendar/delete-event') ?>/${eventId}`, {
+                                            method: 'DELETE',
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data.status === 'success') {
+                                                arg.event.remove(); // Remove from UI only after successful delete
+                                            } else {
+                                                alert('Failed to delete event.');
+                                            }
+                                        });
                                 }
                             },
                             editable: true,
                             dayMaxEvents: true, // allow "more" link when too many events
-                            events: []
+                            events: '<?= base_url('calendar/get-events') ?>',
+                            eventDrop: function(info) {
+                                updateEvent(info.event);
+                            },
+                            eventResize: function(info) {
+                                updateEvent(info.event);
+                            },
+
                         });
+
+                        function updateEvent(event) {
+                            const eventData = {
+                                id: event.id,
+                                start: event.startStr,
+                                end: event.endStr,
+                                allDay: event.allDay // <-- add this line
+                            };
+
+                            fetch('<?= base_url('calendar/update-event') ?>', {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(eventData)
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.status !== 'success') {
+                                        alert('Update failed.');
+                                    } else {
+                                        event.setStart(eventData.start);
+                                        event.setEnd(eventData.end);
+                                    }
+                                });
+                        }
+
 
                         calendar.render();
                     });
