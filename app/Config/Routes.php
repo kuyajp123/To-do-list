@@ -20,12 +20,12 @@ $routes->post('loginUser', 'Auth::loginUser');
 $routes->get('logout', 'Auth::logout');
 
 // Task Routes
-$routes->post('tasks/save', 'Home::saveTask', ['filter' => 'auth']);
-$routes->get('tasks', 'Home::getAllTasks', ['filter' => 'auth']);
-$routes->get('get-todo-task/(:num)', 'Home::getTodoTask/$1', ['filter' => 'auth']);
-$routes->post('update-todo-task', 'Home::updateTodoTask');
-$routes->post('tasks/edit', 'Home::edit');
-$routes->post('tasks/delete/(:num)', 'Home::deleteTask/$1');
+$routes->post('tasks/save', 'TaskController::saveTask', ['filter' => 'auth']);
+$routes->get('tasks', 'TaskController::getAllTasks', ['filter' => 'auth']);
+$routes->get('get-todo-task/(:num)', 'TaskController::getTodoTask/$1', ['filter' => 'auth']);
+$routes->post('update-todo-task', 'TaskController::updateTodoTask');
+$routes->post('tasks/edit', 'TaskController::edit');
+$routes->post('tasks/delete/(:num)', 'TaskController::deleteTask/$1');
 
 // Calendar Routes
 $routes->post('calendar/save-event', 'CalendarController::saveEvent');

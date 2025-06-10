@@ -8,7 +8,6 @@ class Auth extends BaseController
 {
 
     // View Routes
-
     public function register()
     {
         return view('auth/register', ['title' => 'Register']);
@@ -23,7 +22,6 @@ class Auth extends BaseController
 
 
     // Handles Auth processes
-
     public function loginUser()
     {
         $validation = \Config\Services::validation();

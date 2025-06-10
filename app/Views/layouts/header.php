@@ -3,7 +3,7 @@
         <nav style="background-color: #F8F8FF;" class="navbar">
                 <div class="px-4">
                         <a class="navbar-brand" href="#">
-                                <img src="/assets/brand/bootstrap-logo.svg" alt="Bootstrap" width="30" height="24">
+                                <img src="/assets/brand/logo.png" alt="Bootstrap" width="60" height="60">
                         </a>
                 </div>
                 <?php if ($session->get('isLoggedIn')):
