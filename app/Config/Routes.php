@@ -32,3 +32,11 @@ $routes->post('calendar/save-event', 'CalendarController::saveEvent');
 $routes->get('calendar/get-events', 'CalendarController::getEvents');
 $routes->put('calendar/update-event', 'CalendarController::updateEvent');
 $routes->delete('calendar/delete-event/(:num)', 'CalendarController::deleteEvent/$1');
+
+// Password Reset Routes
+$routes->get('password-reset', 'Auth::enterEmail');//
+$routes->post('send-email', 'EmailController::sendEmail');//
+$routes->get('email-sent', 'Auth::emailSent');//
+$routes->post('password-reset/verify', 'Auth::verifyCode');
+// $routes->post('password-reset/set-new-password', 'Auth::setNewPassword');
+$routes->post('password-reset/save-new-password', 'Auth::saveNewPassword');

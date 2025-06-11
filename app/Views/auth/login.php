@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/unauth') ?>
 <?= $this->section('content') ?>
 
-<div class="row justify-content-center border mt-5">
+<div class="row justify-content-center mt-5">
   <a href="<?= site_url('/') ?>" class="text-decoration-none text-dark px-5">Home</a>
   <div class="col-md-6">
     <div class="card shadow">
@@ -26,6 +26,7 @@
           <div class="form-floating mb-3">
             <input type="password" name="password" id="floatingPassword" class="form-control" placeholder="Password" required>
             <label for="floatingPassword" class="form-label">Password</label>
+            <a style="font-size: 0.8rem;" class="text-decoration-none opacity-75" href="<?= site_url('password-reset') ?>">Forgot your password?</a>
           </div>
 
           <?php if (session()->has('errors')) : ?>

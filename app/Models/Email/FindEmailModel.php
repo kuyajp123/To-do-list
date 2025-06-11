@@ -11,11 +11,4 @@ class UserModel extends Model
 
     protected $allowedFields = ['name', 'username', 'password', 'email', 'image'];
     protected $useTimestamps = false;
-
-    public function getUserInfo($email)
-    {
-        return $this->select('name, username, email, image')
-            ->where('email', $email)
-            ->first();
-    }
 }

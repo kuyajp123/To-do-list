@@ -20,7 +20,6 @@ class Auth extends BaseController
 
 
 
-
     // Handles Auth processes
     public function loginUser()
     {
@@ -80,7 +79,7 @@ class Auth extends BaseController
         $userModel->insert([
             'name'     => $this->request->getPost('name'),
             'username' => $this->request->getPost('username'),
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
             'email'    => $this->request->getPost('email'),
             'image'    => $newName,
         ]);
@@ -102,5 +101,84 @@ class Auth extends BaseController
         $session->destroy();
 
         return redirect()->to('/')->with('success', 'You have been logged out.');
+    }
+
+    // Password Reset
+    public function enterEmail()
+    {
+        return view('auth/password/emailForm', ['title' => 'Reset Password']);
+    }
+
+    public function emailSent()
+    {
+        $user = session('user');
+
+        if (!$user) {
+            return redirect()->to('password-reset')->with('error', 'Please enter your email first.');
+        }
+
+        return view('auth/password/codeForm', ['title' => 'Email Sent', 'email' => $user['email']]);
+    }
+
+    public function verifyCode()
+    {
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'code' => 'required|exact_length[6]|numeric'
+        ];
+
+        if (!$validation->setRules($rules)->run($this->request->getPost())) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+        $email = $this->request->getPost('email');
+        $code = $this->request->getPost('code');
+
+        $verificationModel = new \App\Models\Email\Verification();
+        $user = new UserModel();
+        $username = $user->select('username')->where('email', $email)->first();
+        $verification = $verificationModel->verifyCode($email, $code);
+
+        if (!$verification || strtotime($verification['expires_at']) < time()) {
+            return redirect()->back()->withInput()->with('error', 'Invalid or expired code.');
+        }
+
+        return view('auth/password/passwordForm', ['title' => 'Set New Password', 'email' => $email, 'username' => $username['username']]);
+    }
+
+    public function saveNewPassword()
+    {
+        $email = $this->request->getPost('email');
+
+        if (!$email) {
+            return redirect()->to('password-reset')->with('error', 'Please enter your email first.');
+        }
+
+        $validation = \Config\Services::validation();
+
+        $rules = [
+            'password' => 'required|min_length[6]',
+            'confirm_password' => 'matches[password]'
+        ];
+
+        if (!$validation->setRules($rules)->run($this->request->getPost())) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        // Save the new password
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $email)->first();
+
+        if ($user) {
+            $userModel->update($user['id'], [
+                'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT)
+            ]);
+        }
+
+        session()->remove(['user', 'email']);
+        $verificationModel = new \App\Models\Email\Verification();
+        $verificationModel->deleteCode($email);
+
+        return redirect()->to('login')->with('success', 'Password has been reset successfully.');
     }
 }
