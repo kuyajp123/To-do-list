@@ -1,8 +1,10 @@
 <?= $this->extend('layouts/unauth') ?>
 <?= $this->section('content') ?>
 
-<div class="row justify-content-center mt-5">
-  <a href="<?= site_url('/') ?>" class="text-decoration-none text-dark px-5">Home</a>
+<div class="container py-3">
+  <a href="<?= site_url('/') ?>" class="text-decoration-none text-dark">Home</a>
+</div>
+<div class="d-flex justify-content-center mt-3">
   <div class="col-md-6">
     <div class="card shadow">
       <div class="card-body">

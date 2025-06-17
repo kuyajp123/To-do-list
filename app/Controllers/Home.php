@@ -2,11 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\TaskModel\TasksModel;
-use App\Models\TaskModel\TodoTaskModel;
-use App\Models\TaskModel\GetTaskModel;
-use App\Models\TaskModel\GetTodoTaskModel;
-use App\Models\TaskModel\SearchTaskModel;
+use App\Models\TableModel\ActivityModel;
 
 class Home extends BaseController
 {
@@ -18,7 +14,10 @@ class Home extends BaseController
 
     public function dashboard()
     {
-        return view('/user/dashboard');
+        $userId = session()->get('user_id');
+        $activities = (new ActivityModel())->getUserActivities($userId);
+
+        return view('/pages/dashboard', ['activities' => $activities]);
     }
 
     public function schedule()

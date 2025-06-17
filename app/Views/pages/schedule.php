@@ -29,6 +29,8 @@
 
     .content {
         padding: 20px;
+        max-height: 70vh;
+        overflow-y: scroll;
     }
 </style>
 
