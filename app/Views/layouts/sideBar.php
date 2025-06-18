@@ -32,7 +32,7 @@
 <div class="links">
     <ul class="list-group ">
         <a href="<?= base_url('dashboard') ?>" class="sidebar-link">
-            <li class="list-group-item border-0">
+            <li class="list-group-item border-0 rounded">
                 <button class="btn w-100 text-dark d-flex gap-3 align-items-start fw-bold">
                     <i class="bi bi-bar-chart-line-fill text-secondary"></i>Dashboard</button>
             </li>

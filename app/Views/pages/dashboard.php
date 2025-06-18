@@ -32,6 +32,13 @@
         max-height: 70vh;
         overflow-y: scroll;
     }
+
+    .rowData,
+    .rowData:hover {
+        background-color: rgb(233, 233, 233);
+        color: rgb(107, 107, 107);
+        transition: background 0.2s, color 0.2s;
+    }
 </style>
 
 <div class="layout">
@@ -54,7 +61,7 @@
                 <?php else : ?>
                     >
                 <?php endif; ?>
-                
+
                 <!-- if theres no content -->
                 <?php
                 if (empty($activities)) : ?>
@@ -66,26 +73,31 @@
                                 <span>All activities will appear here</span>
                             </div>
                         </div>
-                        <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                            <i class="bi bi-plus-lg"></i>
-                            Add Task
-                        </button>
                     </div>
 
-                    <!-- if theres a content -->
+                    <!-- content here -->
                 <?php else : ?>
-                    <table class="table table-borderless rounded">
+                    <table class="table table-borderless table-light rounded w-100 h-100 table-hover">
                         <tr>
                             <th scope="col">Type</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Description</th>
                             <th scope="col">Created at</th>
-                            <th></th>
                         </tr>
-                        <tbody>
+                        <tbody class="w-100 h-100">
                             <?php
                             foreach ($activities as $activity) : ?>
-                                <tr>
+                                <?php if (esc($activity['type']) === 'task') : ?>
+                                    <tr data-task-id="<?= esc($activity['id']) ?>"
+                                        class="modal-body-data"
+                                        style="cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#todo-<?= esc($activity['id']) ?>">
+                                    <?php else : ?>
+                                    <tr data-event-id="<?= esc($activity['id']) ?>"
+                                        style="cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#event-<?= esc($activity['id']) ?>">
+                                    <?php endif; ?>
                                     <th scope="row">
                                         <?php if (esc($activity['type']) === 'task') : ?>
                                             <span class="badge bg-warning-subtle text-dark">Task</span>
@@ -94,11 +106,131 @@
                                         <?php endif; ?>
                                     </th>
                                     <td><?= esc($activity['title']) ?></td>
-                                    <td><?= esc($activity['description'] ?? 'N/A') ?></td>
                                     <td><?= date('F j, Y', strtotime(esc($activity['created_at']))) ?></td>
-                                    <td><i class="bi bi-three-dots-vertical"></i></td>
-                                </tr>
-                            <?php endforeach; ?>
+                                    </tr>
+
+                                    <!-- view to-do tasks modal -->
+                                    <div class="modal" id="todo-<?= esc($activity['id']) ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <span class="badge bg-warning-subtle text-dark">Task</span>
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h5 class="card-title"><b><?= esc($activity['title']) ?></b></h5> <br>
+                                                    <?php
+                                                    if ($activity['description']) {
+                                                        echo "<p class='card-text'>" . esc($activity['description']) . "</p> <br>";
+                                                    }
+                                                    ?>
+                                                    <div class="container-fluid" id="modal-body-<?= esc($activity['id']) ?>">
+
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- view to-do event modal -->
+                                    <div class="modal" id="event-<?= esc($activity['id']) ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        <span class="badge bg-info-subtle text-dark">Event</span>
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body h-100 w-100">
+                                                    <h5 class="card-title"><b><?= esc($activity['title']) ?></b></h5>
+                                                    <span style="font-size:smaller;">Scheduled on <?= date('F j, Y', strtotime(esc($activity['created_at']))) ?></span>
+                                                    <br>
+                                                    <br>
+                                                    <?php
+                                                    $startDate = date('F j, Y', strtotime(esc($activity['start'])));
+                                                    $endDate = date('F j, Y', strtotime(esc($activity['end'])));
+
+                                                    $dateNow = date('F j, Y');
+
+                                                    if ($startDate === $endDate) : ?>
+                                                        <div class="container-fluid p-0 h-auto w-100 d-flex gap-4">
+                                                            <div class="d-flex flex-column align-items-center gap-1">
+                                                                <div class="text-primary">
+                                                                    <?= date('F', strtotime(esc($activity['start']))); ?>
+                                                                </div>
+                                                                <div class="d-flex align-items-center justify-content-center border bg-primary text-light" style="border-radius: 100px; height: 5em; width: 2em;">
+                                                                    <?= date('j', strtotime(esc($activity['start']))); ?>
+                                                                </div>
+                                                                <div class="h-100 border border-primary"></div>
+                                                            </div>
+                                                            <div class="container border rounded">
+                                                                <div class="d-flex align-items-end justify-content-between">
+                                                                    <p class="d-flex pt-3"><b><?= date('h:i a', strtotime(esc($activity['start']))); ?> - <?= date('h:i a', strtotime(esc($activity['end']))); ?></b></p>
+                                                                    <p><?= date('Y', strtotime(esc($activity['start']))); ?></p>
+                                                                </div>
+                                                                <div>
+                                                                    <p><?= date('l', strtotime(esc($activity['start']))); ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    <?php else : ?>
+                                                        <!-- start -->
+                                                        <div class="container-fluid p-0 h-auto w-100 d-flex gap-4">
+                                                            <div class="d-flex flex-column align-items-center gap-1">
+                                                                <div class="text-primary">
+                                                                    <?= date('F', strtotime(esc($activity['start']))); ?>
+                                                                </div>
+                                                                <div class="d-flex align-items-center justify-content-center border bg-primary text-light" style="border-radius: 100px; height: 5em; width: 2em;">
+                                                                    <?= date('j', strtotime(esc($activity['start']))); ?>
+                                                                </div>
+                                                                <div class="h-100 border border-primary"></div>
+                                                            </div>
+                                                            <div class="container border rounded">
+                                                                <div class="d-flex align-items-end justify-content-between">
+                                                                    <p class="d-flex pt-3"><b><?= date('h:i a', strtotime(esc($activity['start']))); ?></b></p>
+                                                                    <p><?= date('Y', strtotime(esc($activity['start']))); ?></p>
+                                                                </div>
+                                                                <div>
+                                                                    <p><?= date('l', strtotime(esc($activity['start']))); ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <!-- end -->
+                                                        <div class="container-fluid p-0 h-auto w-100 d-flex gap-4">
+                                                            <div class="d-flex flex-column align-items-center gap-1">
+                                                                <div class="text-primary">
+                                                                    <?= date('F', strtotime(esc($activity['end']))); ?>
+                                                                </div>
+                                                                <div class="d-flex align-items-center justify-content-center border bg-primary text-light" style="border-radius: 100px; height: 5em; width: 2em;">
+                                                                    <?= date('j', strtotime(esc($activity['end']))); ?>
+                                                                </div>
+                                                                <div class="h-100 border border-primary"></div>
+                                                            </div>
+                                                            <div class="container border rounded">
+                                                                <div class="d-flex align-items-end justify-content-between">
+                                                                    <p class="d-flex pt-3"><b><?= date('h:i a', strtotime(esc($activity['end']))); ?></b></p>
+                                                                    <p><?= date('Y', strtotime(esc($activity['end']))); ?></p>
+                                                                </div>
+                                                                <div>
+                                                                    <p><?= date('l', strtotime(esc($activity['end']))); ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                         </tbody>
                     </table>
                 <?php endif; ?>
@@ -109,4 +241,5 @@
     </div>
 </div>
 
+<?= view('layouts/main-content/tasks/tasksModal') ?>
 <?= $this->endSection() ?>

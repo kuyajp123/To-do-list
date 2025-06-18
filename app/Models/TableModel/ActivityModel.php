@@ -16,6 +16,9 @@ class ActivityModel extends Model
                 id,
                 title,
                 description,
+                NULL AS start,
+                NULL AS end,
+                NULL AS all_day,
                 created_at
             FROM 
                 tasks
@@ -29,6 +32,9 @@ class ActivityModel extends Model
                 id,
                 title,
                 NULL AS description,
+                start,
+                end,
+                all_day,
                 created_at
             FROM 
                 calendar_events

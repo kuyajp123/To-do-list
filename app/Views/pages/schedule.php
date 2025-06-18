@@ -47,7 +47,7 @@
             <div class="search-header">
                 <?= view('layouts/main-content/search') ?>
             </div>
-            <div class="content">
+            <div class="content rounded" style="border: 2px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                 <div id="calendar"></div>
 
                 <script>

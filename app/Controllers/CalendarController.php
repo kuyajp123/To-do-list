@@ -11,6 +11,11 @@ class CalendarController extends BaseController
         $data = $this->request->getJSON();
         $userId = session()->get('user_id');
 
+        if ($data->allDay && isset($data->end)) {
+            $endTime = strtotime($data->end) - 1;
+            $data->end = date('c', $endTime); 
+        }
+
         $model = new CalendarEventModel();
         $id = $model->insert([
             'user_id' => $userId,
@@ -33,11 +38,17 @@ class CalendarController extends BaseController
         $formattedEvents = [];
 
         foreach ($events as $event) {
+            $end = $event['end'];
+            if ($event['all_day'] && $end) {
+                $endTime = strtotime($end) + 1;
+                $end = date('c', $endTime);
+            }
+
             $formattedEvents[] = [
                 'id'    => $event['id'],
                 'title' => $event['title'],
                 'start' => $event['start'],
-                'end'   => $event['end'],
+                'end'   => $end,
                 'allDay' => (bool) $event['all_day']
             ];
         }
@@ -45,19 +56,26 @@ class CalendarController extends BaseController
         return $this->response->setJSON($formattedEvents);
     }
 
+
     public function updateEvent()
     {
         $data = $this->request->getJSON();
 
+        if ($data->allDay && isset($data->end)) {
+            $endTime = strtotime($data->end) - 1; 
+            $data->end = date('c', $endTime); 
+        }
+
         $model = new CalendarEventModel();
         $model->update($data->id, [
-            'start' => $data->start,
-            'end'   => $data->end,
-            'all_day' => $data->allDay ? 1 : 0 // <-- add this
+            'start'   => $data->start,
+            'end'     => $data->end,
+            'all_day' => $data->allDay ? 1 : 0
         ]);
 
         return $this->response->setJSON(['status' => 'success']);
     }
+
 
     public function deleteEvent($id)
     {
