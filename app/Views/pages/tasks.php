@@ -200,8 +200,10 @@
                         <!-- if theres no result found in search -->
                         <div class="container-fluid h-100 w-100 p-0 d-flex flex-column justify-content-center align-items-center gap-3">
                             <div class="d-flex flex-column justify-content-center align-items-center text-center gap-3">
-                                <div class="text-center">
-                                    No results found for "<strong><?= esc($search) ?></strong>".
+                                <img src="<?= base_url('assets/empty-state/no_task.svg') ?>" alt="My Icon" width="150">
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center text-muted">
+                                    <span><b>No Result found</b></span>
+                                    <span>Try adjusting your search criteria</span>
                                 </div>
                             </div>
                         </div>
