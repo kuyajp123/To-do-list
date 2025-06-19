@@ -54,41 +54,44 @@ class ActivityModel extends Model
         $db = \Config\Database::connect();
 
         $sql = "
-            SELECT 
-                'task' AS type,
-                id,
-                title,
-                description,
-                NULL AS start,
-                NULL AS end,
-                NULL AS all_day,
-                created_at
-            FROM 
-                tasks
+            SELECT * FROM (
+                SELECT 
+                    'task' AS type,
+                    id,
+                    user_id,
+                    title,
+                    description,
+                    NULL AS start,
+                    NULL AS end,
+                    NULL AS all_day,
+                    created_at
+                FROM 
+                    tasks
+
+                UNION ALL
+
+                SELECT 
+                    'Event' AS type,
+                    id,
+                    user_id,
+                    title,
+                    NULL AS description,
+                    start,
+                    end,
+                    all_day,
+                    created_at
+                FROM 
+                    calendar_events
+
+            ) AS merged
             WHERE 
-                title LIKE ?
-
-            UNION ALL
-
-            SELECT 
-                'Event' AS type,
-                id,
-                title,
-                NULL AS description,
-                start,
-                end,
-                all_day,
-                created_at
-            FROM 
-                calendar_events
-            WHERE 
-                title LIKE ?
-
+                (title LIKE ? OR type LIKE ?)
+                AND user_id = ?
             ORDER BY 
-                created_at DESC;
+                created_at DESC
         ";
 
-        $query = $db->query($sql, ["%$query%", "%$query%"]);
+        $query = $db->query($sql, ["%$query%", "%$query%", session()->get('user_id')]);
         return $query->getResultArray();
     }
 }

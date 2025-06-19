@@ -137,7 +137,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- view to-do event modal -->
+                                    <!-- view event modal -->
                                     <div class="modal" id="event-<?= esc($activity['id']) ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-scrollable">
                                             <div class="modal-content">
@@ -171,7 +171,12 @@
                                                             </div>
                                                             <div class="container border rounded">
                                                                 <div class="d-flex align-items-end justify-content-between">
-                                                                    <p class="d-flex pt-3"><b><?= date('h:i a', strtotime(esc($activity['start']))); ?> - <?= date('h:i a', strtotime(esc($activity['end']))); ?></b></p>
+                                                                    <p class="d-flex pt-3"><b><?= date('h:i a', strtotime(esc($activity['start']))); ?> - <?= date('h:i a', strtotime(esc($activity['end']))); ?></b>
+                                                                        <?php if ($activity['all_day'] == 1) : ?>
+                                                                            &nbsp;&nbsp;
+                                                                            <span class="badge bg-secondary opacity-75">all day</span>
+                                                                        <?php endif; ?>
+                                                                    </p>
                                                                     <p><?= date('Y', strtotime(esc($activity['start']))); ?></p>
                                                                 </div>
                                                                 <div>
