@@ -22,14 +22,33 @@
     a {
         text-decoration: none;
     }
+
+    #sidebarbtn {
+        display: none;
+    }
+
+    /* Hide sidebar on small screens */
+    @media (max-width: 725px) {
+        .body {
+            grid-template-columns: 1fr;
+        }
+
+        .links {
+            display: none;
+        }
+
+        #sidebarbtn {
+            display: block !important;
+        }
+    }
 </style>
 
-<div class="new d-flex justify-content-center align-items-center">
-    <button style="border: 2px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" class="btn text-dark fs-6 px-5 py-3 fw-bold" onclick="window.location.href='<?= base_url('user/new') ?>'">
-        <i class="bi bi-plus fw-bold"></i>
-        New</button>
-</div>
-<div class="links">
+<div style="background-color: #F8F8FF;" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+        <img src="<?= base_url('assets/brand/logo.png') ?>" alt="MG Logo" width="50" class="rounded-circle">
+        <span class="fw-bold fs-5 ms-2">To-Do List</span>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
     <ul class="list-group ">
         <a href="<?= base_url('dashboard') ?>" class="sidebar-link">
             <li class="list-group-item border-0 rounded">
@@ -44,10 +63,27 @@
                     <i class="bi bi-clipboard2-check-fill text-secondary"></i>Tasks</button>
             </li>
         </a>
-        <a href="#" class="sidebar-link">
+        <a href="<?= base_url('schedule') ?>" class="sidebar-link">
+            <li class="list-group-item border-0">
+                <button class="btn w-100 text-dark d-flex gap-3 align-items-start fw-bold"> <i class="bi bi-calendar-check-fill text-secondary"></i>Schedules</button>
+            </li>
+        </a>
+    </ul>
+</div>
+
+<div class="links">
+    <ul class="list-group ">
+        <a href="<?= base_url('dashboard') ?>" class="sidebar-link">
+            <li class="list-group-item border-0 rounded">
+                <button class="btn w-100 text-dark d-flex gap-3 align-items-start fw-bold">
+                    <i class="bi bi-bar-chart-line-fill text-secondary"></i>Dashboard</button>
+            </li>
+        </a>
+
+        <a href="<?= base_url('tasks') ?>" class="sidebar-link">
             <li class="list-group-item border-0">
                 <button class="btn w-100 text-dark d-flex gap-3 align-items-start fw-bold">
-                    <i class="bi bi-file-earmark-text-fill text-secondary"></i>Notes</button>
+                    <i class="bi bi-clipboard2-check-fill text-secondary"></i>Tasks</button>
             </li>
         </a>
         <a href="<?= base_url('schedule') ?>" class="sidebar-link">
