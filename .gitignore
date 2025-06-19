@@ -126,6 +126,6 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 
-/public/assets/brand
+
 /public/assets/icons/bootstrap-icons-1.13.1
 /public/uploads/profile_images/
